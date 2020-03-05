@@ -15,22 +15,23 @@ push 0
 
 mov ax,data
 mov ds,ax
+;Establecer modo video (Texto)
 mov ah,00h
 mov al,03h
 int 10H
-
+;Posicionar el cursor
 mov cx,80
 mov ah,02h
 mov dh,0
 mov dl,0
 mov bx,1
-
+;arriba
 ciclo1:
 mov ah,02h
 int 10H
-
+;Escribir caracter
 mov ah,0Ah
-mov al,2Ah
+mov al,2Ah ;codigo del caracter a escribir(*)
 mov var,cx
 mov cx,bx
 int 10H
@@ -44,7 +45,7 @@ mov ah,02h
 mov dh,0
 mov dl,79
 mov bx,1
-
+;derecha
 ciclo2:
 mov ah,02h
 int 10H
@@ -64,7 +65,7 @@ mov ah,02h
 mov dh,24
 mov dl,79
 mov bx,1
-
+;Abajo
 ciclo3:
 mov ah,02h
 int 10H
@@ -85,7 +86,7 @@ mov ah,02h
 mov dh,23
 mov dl,0
 mov bx,1
-
+;izquierda
 ciclo4:
 mov ah,02h
 int 10H
