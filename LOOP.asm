@@ -18,7 +18,7 @@ CODIGO SEGMENT 'CODE'
      PUSH 0
      MOV AX, DATOS
      MOV DS, AX
-     
+      
      MOV CX,5
      LINEA1:
      PUSH CX
