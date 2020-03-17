@@ -15,7 +15,7 @@ datos segment
     a db 10 dup('$')
     b db 10 dup('$')
     c db 10 dup('$')
-
+ 
 datos ends
 
 codigo segment 'code'
