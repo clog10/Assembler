@@ -2,30 +2,59 @@
 //Proyecto Lenguajes de Interfaz
 //Simulacion de piano
 
+//Importacion de librerias primordiales
 #include<stdio.h>
 #include<stdlib.h>
 
+//Declarando variables de texto que se mostrarán
+//en la ejecución del programa
+char titulo[20]="Clic me$";
+char notaDo[35]="Clic izquierdo dentro de boton$";
+char NotaRe[35]="Clic derecho dentro de boton$";
+char clicizqf[35]="Clic izquierdo fuera de boton$";
+char clicderf[35]="Clic derecho fuera de boton$";
+char sobre[20]="Sobre boton$";
+char fuera[20]="Fuera boton$";
+int coorx=0;
+int coory=0;
+char fila=0;
+char columna=0;
+
+//metodos
 void makeSound(int frequency);
 void silence();
 void retardo();
 void portControl();
 
+//metodo que genera los sonidos 
+//frecuency es la variable que tendra
+//el codigo de sonido
 void makeSound(int frequency) {
 	asm {
+		//Pasamos al registo el valor para generar sonido
 		MOV BX,frequency
+		//Movemos el valor bajo al registro
 		MOV AL,BL
+		//Byte inferior de frecuencia 
 		OUT 42H,AL
+		//Movemos el valor alto al registro
 		MOV AL,BH
+		//Byte inferior de frecuencia 
 		OUT 42H,AL
+		//Leer el modo de puerto actual B (8255)
 		IN AL,61H
+		//Encienda el altavoz y el temporizador
 		OR AL,3
 		OUT 61H,AL
 	}
 }
 
+//
 void silence(){
 	asm {
+		//Leer el modo de puerto actual B (8255)
 		IN AL,61H
+		//Modo de restauración
 		AND AL,0FCH
 		OUT 61H,AL
 	}
@@ -41,14 +70,94 @@ void retardo(){
 	}
 }
 
+//Método donde se determina el tamaño de la ventana,
+//el color de la pantalla y el texto, desplaza las 
+//lineas hacia arriba.
+void ventana(char a,char b,char a1,char b1){
+	asm{
+		mov ax,0600h
+		mov bh,73h
+		mov ch,a
+		mov cl,b
+		mov dh,a1
+		mov dl,b1
+		int 10H
+	}
+}
+
+//Metodo que posiciona el cursor en la pantalla
+//conforme a las coordenadas dadas
+void posicionar_cursor(char fila,char columna){
+	asm{
+		mov ah,02h
+		mov bh,00
+		mov dh,fila
+		mov dl,columna
+		int 10h
+	}
+}
+
+//Metodo que imprime Texto en la pantalla
+void printText(char texto[]){
+	int j;	
+	char letra;
+	j=0;
+	while(texto[j]!='$'){
+		letra = texto[j];
+		asm{
+			mov ah,02h
+			mov dl,letra
+			int 21h
+		}
+		j++;	
+	}
+}
+
+
+//Metdodo que apaga el altavoz
+void apaga(){
+	asm{
+		MOV DX, 61H
+		IN AL,DX
+		AND AL, 0FCH
+		OUT DX, AL
+	}
+}
+
+//Metodo que limpia la pantalla en consola
+void cls(){
+	asm{
+		mov ax,0600h
+		mov bh,31h
+		mov cx,0000h
+		mov dx,184Fh
+		int 10h
+	}
+	ventana(10,25,12,35);
+	posicionar_cursor(11,26);
+	printText(titulo);
+}
+	
+
+void fin(){
+	apaga();
+	asm{
+		MOV AH,4CH
+    	INT 21H
+    	RET
+	}
+}
 
 void portControl(){
 }
 
 void main() {
+	
 	REPETIR:
+
 	retardo();
 	silence();
+
 	asm {
 		MOV AX,0
 		MOV AH,01H
