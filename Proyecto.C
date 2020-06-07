@@ -8,13 +8,14 @@
 
 //Declarando variables de texto que se mostrarán
 //en la ejecución del programa
-char titulo[20]="Clic me$";
-char notaDo[35]="Clic izquierdo dentro de boton$";
-char NotaRe[35]="Clic derecho dentro de boton$";
-char clicizqf[35]="Clic izquierdo fuera de boton$";
-char clicderf[35]="Clic derecho fuera de boton$";
-char sobre[20]="Sobre boton$";
-char fuera[20]="Fuera boton$";
+char titulo[20]="Piano Musical$";
+char notaDo[35]="Nota Do presionada$";
+char NotaRe[35]="Nota Re presionada$";
+char NotaMi[35]="Nota Mi presionada$";
+char NotaFa[35]="Nota Fa presionada$";
+char NotaSol[35]="Nota Sol presionada$";
+char NotaLa[35]="Nota La presionada$";
+char NotaSi[35]="Nota Si presionada$";
 int coorx=0;
 int coory=0;
 char fila=0;
@@ -56,9 +57,11 @@ void silence(){
 		IN AL,61H
 		//Modo de restauración
 		AND AL,0FCH
+		//Enciende el altavoz
 		OUT 61H,AL
 	}
 }
+
 
 void retardo(){
 	asm {
@@ -76,11 +79,11 @@ void retardo(){
 void ventana(char a,char b,char a1,char b1){
 	asm{
 		mov ax,0600h
-		mov bh,73h
-		mov ch,a
-		mov cl,b
-		mov dh,a1
-		mov dl,b1
+		mov bh,73h//color de la pantalla
+		mov ch,a//linea donde comienza la ventana de texto 
+		mov cl,b//columna donde comienza la ventana de texto 
+		mov dh,a1//linea donde acaba la ventana de texto
+		mov dl,b1//columna donde acaba la ventana de texto
 		int 10H
 	}
 }
@@ -90,14 +93,17 @@ void ventana(char a,char b,char a1,char b1){
 void posicionar_cursor(char fila,char columna){
 	asm{
 		mov ah,02h
-		mov bh,00
-		mov dh,fila
-		mov dl,columna
+		mov bh,00//pagina de video
+		mov dh,fila//linea donde sutuaremos el cursor
+		mov dl,columna//columna donde situaremos el cursor
 		int 10h
 	}
 }
 
 //Metodo que imprime Texto en la pantalla
+//Este método descompone el arreglo de caracteres
+//e imprime caracter por caracter y se lo pasa a 
+//codigo ensamblador que no puede recibir cadenas
 void printText(char texto[]){
 	int j;	
 	char letra;
@@ -106,6 +112,7 @@ void printText(char texto[]){
 		letra = texto[j];
 		asm{
 			mov ah,02h
+			//codigo ASCII que se imprimirá
 			mov dl,letra
 			int 21h
 		}
@@ -133,12 +140,23 @@ void cls(){
 		mov dx,184Fh
 		int 10h
 	}
-	ventana(10,25,12,35);
-	posicionar_cursor(11,26);
-	printText(titulo);
 }
-	
 
+//Metodo que limpia la pantalla en donde se imprime
+//el texto cada que se genera una pulsacion del teclado	
+void limpiar(char a, char b,char a1, char b1){
+	asm{
+		mov ax, 0600h
+		mov bh,30h
+		mov cl,b
+		mov ch,a
+	
+		mov dl,b1
+		mov dh,a1
+		int 10H
+	}}
+	
+//Metodo que termina la ejecución del programa
 void fin(){
 	apaga();
 	asm{
@@ -152,69 +170,80 @@ void portControl(){
 }
 
 void main() {
-	
+	cls();
+	ventana(10,25,12,35);
+	posicionar_cursor(11,26);
+	printText(titulo);
+
 	REPETIR:
 
 	retardo();
 	silence();
 
 	asm {
+		//Interrupcion para controlar el teclado
 		MOV AX,0
+		//Obtener el estado del teclado
 		MOV AH,01H
 		INT 16H
 		JZ REPETIR
-
+		//Obtener pulsación del teclado
+		//para compararla y poder emitir
+		//sonidos 
 		MOV AH,00H
 		INT 16H
-		
-		CMP AL,71H
-		JZ  C5
-		CMP AL,32H
-		JZ DB5
-		CMP AL,77H
-    	JZ D5
-    	CMP AL,33H
-    	JZ EB5
-    	CMP AL,65H
-    	JZ E5
-    	CMP AL,72H
-    	JZ F5
-    	CMP AL,35H
-    	JZ GB5
-    	CMP AL,74H
-    	JZ G5
-    	CMP AL,36H
-    	JZ AB5
-    	CMP AL,79H
-    	JZ A5
-    	CMP AL,37H
-    	JZ BB5
-    	CMP AL,75H
-    	JZ B5
-    	CMP AL,7AH
-		JZ  C4
-		CMP AL,73H
-		JZ DB4
-		CMP AL,78H
-    	JZ D4
-    	CMP AL,64H
-    	JZ EB4
-    	CMP AL,63H
-    	JZ E4
-    	CMP AL,76H
-    	JZ F4
-    	CMP AL,67H
-    	JZ GB4
-    	CMP AL,62H
-    	JZ G4
-    	CMP AL,68H
-    	JZ AB4
-    	CMP AL,6EH
-    	JZ A4
-    	CMP AL,6AH
-    	JZ BB4
-    	CMP AL,6DH
-    	JZ B4
+		//Comparaciones con la tecla pulsada
+		//para comparar y emitir el sonido
+		//correspondiente
+
+		CMP AL,71H//Tecla  presionada
+		JZ  C5//Llamada al sonido a escuchar
+		CMP AL,32H//Tecla  presionada
+		JZ DB5//Llamada al sonido a escuchar
+		CMP AL,77H//Tecla  presionada
+    	JZ D5//Llamada al sonido a escuchar
+    	CMP AL,33H//Tecla  presionada
+    	JZ EB5//Llamada al sonido a escuchar
+    	CMP AL,65H//Tecla  presionada
+    	JZ E5//Llamada al sonido a escuchar
+    	CMP AL,72H//Tecla  presionada
+    	JZ F5//Llamada al sonido a escuchar
+    	CMP AL,35H//Tecla  presionada
+    	JZ GB5//Llamada al sonido a escuchar
+    	CMP AL,74H//Tecla  presionada
+    	JZ G5//Llamada al sonido a escuchar
+    	CMP AL,36H//Tecla  presionada
+    	JZ AB5//Llamada al sonido a escuchar
+    	CMP AL,79H//Tecla  presionada
+    	JZ A5//Llamada al sonido a escuchar
+    	CMP AL,37H//Tecla  presionada
+    	JZ BB5//Llamada al sonido a escuchar
+    	CMP AL,75H//Tecla  presionada
+    	JZ B5//Llamada al sonido a escuchar
+    	CMP AL,7AH//Tecla  presionada
+		JZ  C4//Llamada al sonido a escuchar
+		CMP AL,73H//Tecla  presionada
+		JZ DB4//Llamada al sonido a escuchar
+		CMP AL,78H//Tecla  presionada
+    	JZ D4//Llamada al sonido a escuchar
+    	CMP AL,64H//Tecla  presionada
+    	JZ EB4//Llamada al sonido a escuchar
+    	CMP AL,63H//Tecla  presionada
+    	JZ E4//Llamada al sonido a escuchar
+    	CMP AL,76H//Tecla  presionada
+    	JZ F4//Llamada al sonido a escuchar
+    	CMP AL,67H//Tecla  presionada
+    	JZ GB4//Llamada al sonido a escuchar
+    	CMP AL,62H//Tecla  presionada
+    	JZ G4//Llamada al sonido a escuchar
+    	CMP AL,68H//Tecla  presionada
+    	JZ AB4//Llamada al sonido a escuchar
+    	CMP AL,6EH//Tecla  presionada
+    	JZ A4//Llamada al sonido a escuchar
+    	CMP AL,6AH//Tecla  presionada
+    	JZ BB4//Llamada al sonido a escuchar
+    	CMP AL,6DH//Tecla  presionada
+    	JZ B4//Llamada al sonido a escuchar
 	}
 	silence();
 	asm {
