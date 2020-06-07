@@ -195,54 +195,53 @@ void main() {
 		//Comparaciones con la tecla pulsada
 		//para comparar y emitir el sonido
 		//correspondiente
-
-		CMP AL,71H//Tecla  presionada
+		CMP AL,71H//Tecla q presionada
 		JZ  C5//Llamada al sonido a escuchar
-		CMP AL,32H//Tecla  presionada
+		CMP AL,32H//Tecla 2 presionada
 		JZ DB5//Llamada al sonido a escuchar
-		CMP AL,77H//Tecla  presionada
+		CMP AL,77H//Tecla w presionada
     	JZ D5//Llamada al sonido a escuchar
-    	CMP AL,33H//Tecla  presionada
+    	CMP AL,33H//Tecla 3 presionada
     	JZ EB5//Llamada al sonido a escuchar
-    	CMP AL,65H//Tecla  presionada
+    	CMP AL,65H//Tecla e presionada
     	JZ E5//Llamada al sonido a escuchar
-    	CMP AL,72H//Tecla  presionada
+    	CMP AL,72H//Tecla r presionada
     	JZ F5//Llamada al sonido a escuchar
-    	CMP AL,35H//Tecla  presionada
+    	CMP AL,35H//Tecla 5 presionada
     	JZ GB5//Llamada al sonido a escuchar
-    	CMP AL,74H//Tecla  presionada
+    	CMP AL,74H//Tecla t presionada
     	JZ G5//Llamada al sonido a escuchar
-    	CMP AL,36H//Tecla  presionada
+    	CMP AL,36H//Tecla 6 presionada
     	JZ AB5//Llamada al sonido a escuchar
-    	CMP AL,79H//Tecla  presionada
+    	CMP AL,79H//Tecla y presionada
     	JZ A5//Llamada al sonido a escuchar
-    	CMP AL,37H//Tecla  presionada
+    	CMP AL,37H//Tecla 7 presionada
     	JZ BB5//Llamada al sonido a escuchar
-    	CMP AL,75H//Tecla  presionada
+    	CMP AL,75H//Tecla u presionada
     	JZ B5//Llamada al sonido a escuchar
-    	CMP AL,7AH//Tecla  presionada
+    	CMP AL,7AH//Tecla z presionada
 		JZ  C4//Llamada al sonido a escuchar
-		CMP AL,73H//Tecla  presionada
+		CMP AL,73H//Tecla s presionada
 		JZ DB4//Llamada al sonido a escuchar
-		CMP AL,78H//Tecla  presionada
+		CMP AL,78H//Tecla x presionada
     	JZ D4//Llamada al sonido a escuchar
-    	CMP AL,64H//Tecla  presionada
+    	CMP AL,64H//Tecla d presionada
     	JZ EB4//Llamada al sonido a escuchar
-    	CMP AL,63H//Tecla  presionada
+    	CMP AL,63H//Tecla c presionada
     	JZ E4//Llamada al sonido a escuchar
-    	CMP AL,76H//Tecla  presionada
+    	CMP AL,76H//Tecla v presionada
     	JZ F4//Llamada al sonido a escuchar
-    	CMP AL,67H//Tecla  presionada
+    	CMP AL,67H//Tecla g presionada
     	JZ GB4//Llamada al sonido a escuchar
-    	CMP AL,62H//Tecla  presionada
+    	CMP AL,62H//Tecla b presionada
     	JZ G4//Llamada al sonido a escuchar
-    	CMP AL,68H//Tecla  presionada
+    	CMP AL,68H//Tecla h presionada
     	JZ AB4//Llamada al sonido a escuchar
-    	CMP AL,6EH//Tecla  presionada
+    	CMP AL,6EH//Tecla n presionada
     	JZ A4//Llamada al sonido a escuchar
-    	CMP AL,6AH//Tecla  presionada
+    	CMP AL,6AH//Tecla j presionada
     	JZ BB4//Llamada al sonido a escuchar
-    	CMP AL,6DH//Tecla  presionada
+    	CMP AL,6DH//Tecla m presionada
     	JZ B4//Llamada al sonido a escuchar
 	}
 	silence();
