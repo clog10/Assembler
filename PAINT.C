@@ -27,21 +27,21 @@ void main(){
         INT 33H
         
     }
+    //tamaño ventana
     CICLO_PALETA:
         asm{
-        //PARA QUE PINTE DE COLORES
         
         MOV AH, 0CH//ESCRIBIR PUNTO O PIXEL
         MOV AL, 0FH//OBTENER MODO DE VIDEO ACTUAL
         INT 10H
 
         INC DX
-        CMP DX,480 ;//PINTADO VERTICAL valor original 480
+        CMP DX,480 ;//PINTADO VERTICAL
         JNE CICLO_PALETA
 
         MOV DX, 00
         INC CX
-        CMP CX, 640 ;//PINTADO HORIZONTAL valor original 640
+        CMP CX, 640 ;//PINTADO HORIZONTAL 
         JNE CICLO_PALETA
         }
 
